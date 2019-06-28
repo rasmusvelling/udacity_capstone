@@ -1,12 +1,5 @@
 import pandas as pd
-import numpy as np
-
-import sklearn.metrics
-from sklearn import tree
-
-import src
 import src.models
-
 
 datasets = [
     'ARCENE',
@@ -16,27 +9,34 @@ datasets = [
     'MADELON'
 ]
 
+models = [
+    'benchmark_all_neg1',
+    'benchmark_all_pls1',
+    'benchmark_pca_logistic',
+    'model_xgboost'
+]
+
+rankings = []
 
 for dataset in datasets:
     # load data
+    # dataset = datasets[0]
     data = src.load_data(dataset)
 
-    BER = src.models.benchmark_all_neg1(data)
-    print("\nAll negs")
-    print(dataset)
-    print(BER)
+    print("\n\n####################\n"+ dataset)
 
-    BER = src.models.benchmark_all_pls1(data)
-    print("\nAll plus")
-    print(dataset)
-    print(BER)
+    for model in models:
+        model_object = getattr(src.models, model)
+        BER = model_object(data)
+        rankings.append({
+            'model': model,
+            'dataset': dataset,
+            'BER': BER
+        })
+        print(model)
+        print(BER)
 
-    BER = src.models.benchmark_pca_logistic(data)
-    print("\nPCA Logisitc reg")
-    print(dataset)
-    print(BER)
-
-
+rankings = pd.concat()
 
 
 #
