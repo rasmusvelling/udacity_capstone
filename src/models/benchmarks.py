@@ -29,3 +29,38 @@ def benchmark_all_neg1(data):
     y_valid_hat = [-1 for x in range(len(data['y_valid'].tolist()))]
     BER = src.ber(y=data['y_valid'].tolist(), y_hat=y_valid_hat)
     return BER
+
+def benchmark_challenge_winner():
+    rankings = []
+
+    rankings.append({
+        'model': 'NIPS Winner, Validation score',
+        'dataset': 'ARCENE',
+        'BER': .0722
+    })
+
+    rankings.append({
+        'model': 'NIPS Winner, Validation score',
+        'dataset': 'GISETTE',
+        'BER': .0160
+    })
+
+    rankings.append({
+        'model': 'NIPS Winner, Validation score',
+        'dataset': 'DEXTER',
+        'BER': .0533
+    })
+
+    rankings.append({
+        'model': 'NIPS Winner, Validation score',
+        'dataset': 'DOROTHEA',
+        'BER': .0547
+    })
+
+    rankings.append({
+        'model': 'NIPS Winner, Validation score',
+        'dataset': 'MADELON',
+        'BER': .0667
+    })
+
+    return rankings
