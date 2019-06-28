@@ -36,7 +36,14 @@ for dataset in datasets:
         print(model)
         print(BER)
 
-rankings = pd.concat()
+# Challenge winner scores
+
+
+rankings = pd.DataFrame(rankings)
+rankings = rankings.pivot_table(values='BER', columns='dataset', index='model')
+rankings['Total'] = rankings.mean(axis=1)
+rankings = rankings.sort_values('Total')
+rankings.to_excel("data\\ranking.xlsx")
 
 
 #
