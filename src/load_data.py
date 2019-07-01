@@ -8,10 +8,10 @@ def load_data(dataset):
 
     ###################################
     # File Paths
-    data_X_train = "data\\" + dataset.upper() + "\\" + dataset.upper() + "\\" + dataset.lower() + "_train.data"
-    data_X_valid = "data\\" + dataset.upper() + "\\" + dataset.upper() + "\\" + dataset.lower() + "_valid.data"
-    data_y_train = "data\\" + dataset.upper() + "\\" + dataset.upper() + "\\" + dataset.lower() + "_train.labels"
-    data_y_valid = "data\\" + dataset.upper() + "\\" + dataset.lower() + "_valid.labels"
+    data_X_train = "data_NIPS2003\\" + dataset.upper() + "\\" + dataset.upper() + "\\" + dataset.lower() + "_train.data"
+    data_X_valid = "data_NIPS2003\\" + dataset.upper() + "\\" + dataset.upper() + "\\" + dataset.lower() + "_valid.data"
+    data_y_train = "data_NIPS2003\\" + dataset.upper() + "\\" + dataset.upper() + "\\" + dataset.lower() + "_train.labels"
+    data_y_valid = "data_NIPS2003\\" + dataset.upper() + "\\" + dataset.lower() + "_valid.labels"
 
     ###################################
     # Load

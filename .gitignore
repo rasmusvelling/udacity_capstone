@@ -3,8 +3,6 @@
 .idea/
 /data/*
 /cache/*
-!/data/NIPS2003/*
-
 
 # Data files
 *.csv
