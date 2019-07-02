@@ -14,6 +14,7 @@ models = [
     'benchmark_all_neg1',
     'benchmark_all_pls1',
     'benchmark_pca_logistic',
+    'model_svm',
     'model_lightgbm',
     'model_xgboost'
 ]
