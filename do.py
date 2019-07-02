@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import src.models
 
@@ -13,6 +14,7 @@ models = [
     'benchmark_all_neg1',
     'benchmark_all_pls1',
     'benchmark_pca_logistic',
+    'model_lightgbm',
     'model_xgboost'
 ]
 
@@ -21,11 +23,11 @@ rankings = []
 for dataset in datasets:
     # load data
     # dataset = datasets[0]
+    print("\n\n####################\n"+ dataset)
     data = src.load_data(dataset)
 
-    print("\n\n####################\n"+ dataset)
-
     for model in models:
+        # model = 'model_lightgbm'
         model_object = getattr(src.models, model)
         BER = model_object(data)
         rankings.append({
@@ -43,7 +45,7 @@ rankings = pd.DataFrame(rankings)
 rankings = rankings.pivot_table(values='BER', columns='dataset', index='model')
 rankings['Total'] = rankings.mean(axis=1)
 rankings = rankings.sort_values('Total')
-rankings.to_excel("data\\ranking.xlsx")
+rankings.to_csv(os.path.join("data", "ranking.csv"))
 
 
 #
