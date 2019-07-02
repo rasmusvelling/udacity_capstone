@@ -1,4 +1,4 @@
-\title{Feature Selection}
+\title{Dimensionality Reduction \& Feature Selection}
 \author{
 	Rasmus Nisted Velling\\
 	\emph{Machine Learning Engineer Nanodegree}\\
@@ -7,7 +7,10 @@
 \date{\today}
 
 \documentclass[12pt]{article}
+\usepackage[a4paper]{geometry}
 \usepackage{cite}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
 
 \begin{document}
 \maketitle
@@ -22,18 +25,31 @@ This is the paper's abstract \ldots
 
 \section{Definition}\label{definition}
 
-(approx. 1-2 pages)
-
 \subsection{Background}
-Feature selection is at the heart of applied statistics and data science. In commercial as well as academic settings one of the most common problems is that of separating good features, which provide explanatory value, from poor, which mainly act as noise. Selecting only the most relevant subset of features will lead to \emph{parsimony} and is an ideal inspired by Occams Razor ~\cite{wiki:occam}
 
-In many settings one will often face problems where the number of raw available features vastly exceeds what regular computers can handle within a reasonable amount of time ~\cite{mboostintro}. Thus, feature selection should be of interest to most people, who deal with applied statistics and data science on a higher level.
+\subsubsection{Dimensionality reduction and feature selection}
 
-At the same time in many realworld settings, especially in businesses, a few number of data scientist and analyst are expected to solve problems across many domains like marketing and sales, operations, logistics, infrastructure, HR and many more, while at the same time being required to deliver results fairly quickly and of a decent standard. In these types of settings flexibility and genericity become important model aspects, as the analysis and data science teams will want to deliver scalable and easily maintainable solutions to the problems posed by the surrounding business.
+Dimensionality reduction and feature selection is at the heart of applied statistics and data science. In it's essence, dimension reduction is the practice of taking $p$ available features (also known as dimensions) and reducing them to $p_{reduced} <= p$, so that we end up with fewer features than before. This can be done in many ways ~\cite{wiki:dimred}, and feature selection is, in short, one particular way of doing so, where one `cherry picks' a subset of features based on some criteria, often a statistical scoring like the Akaike information criterion or likewise ~\cite{wiki:feature}.
+
+Among other types of dimensionality reduction methods commonly used are Principal Component Analysis (PCA) and Random Projections, which both are transformations of the underlying data, so that the new set of features are (often linear) combinations of the original inputs. This has both advantages, in that new, more informationally rich features can arise, and that the new dataset, with fewer features is easier to process; and disadvantages, in that the blurring of underlying features can make interpratability difficult and possible loss of information, of not done carefully.
+
+There can be practical as well as scientific motivations for doing dimensionality reduction in general and/or feature selection in particular. Dimensionality reduction in general, especially when dealing with hundreds, thousands, or more, features is often born out of a shear practical motivation of wanting to speed up computational processing time or making data easier to comprehend and vizualize.
+
+Feature selection in particular, when done right, will also yield the benefits of quicker processing and easier understnading, but has the additional benefits of providing very concrete information about what particular inputs are of (statistical) importance to the problem at hand.
+
+\subsubsection{Making sense of mess}
+
+In commercial as well as academic settings, it is often common to face statistical problems, where an abundance of features are given, without any clear indication of which are import, and which are not. `Throwing everything at the model', will result in something that takes hours, maybe days, to process, and possibly without any usefull output. Thus the first problem at hand becomes that of `boiling down' the data to something that can be processed and will deliver explanatory value ~\cite{mboostintro}.
+
+And even if we could process all available inputs with decent speed and quality, a lot of times supplying insights to a business or academic research also necessitates providing interpretability of some sorts and not just a `black box'. So eventually we will also want to strive for the `most simple explanation' that still fits data reasonably well ~\cite{wiki:occam}
+
+At the same time in many realworld settings, especially in businesses, a few number of data scientist and analyst are expected to solve problems across many domains like marketing and sales, operations, logistics, infrastructure, HR and many more, while at the same time being required to deliver results fairly quickly and of a decent standard. In these types of settings flexibility and genericity become important model and framework aspects, as the analysis and data science teams will want to deliver scalable and easily maintainable solutions to the problems posed by the surrounding business.
+
+Thus it is of interest to explore models and frameworks which can help us deal with both feature selection and or dimensionality reduction in semi-automatic ways, as this will yield better models, speed up processing and save us precious time at work.
 
 \subsubsection{NIPS 2003 Feature Selection Challenge}
 
-The NIPS 2003 Feature Selection Challenge ~\cite{nips03workshop} mimicked the above-mentioned requirements into one competition, where participating teams were asked to come up with one model, or framework, which was then implemented across five datasets, sourced from different academic domains. The final score and ranking was then calculated as the average of the \emph{Balanced Error Rate} [\ref{BER}] on each dataset, thus, requiring the teams to come up with flexible and generic models, that where somehow able to distinguish useable features from non-useable.
+The NIPS 2003 Feature Selection Challenge ~\cite{nips03workshop} mimicked the above-mentioned requirements into one competition, where participating teams were asked to come up with one model, or framework, which was then implemented across five datasets, sourced from different academic domains. The final score and ranking was then calculated as the average of the \emph{Balanced Error Rate} (defined in section \ref{model_val}) on each dataset, thus, requiring the teams to come up with flexible and generic models, that where somehow able to distinguish useable features from non-useable.
 
 \subsection{Problem Overview}
 
@@ -57,22 +73,32 @@ How well do python-implementations (using readily available tools like sklearn) 
 \item The models will be ranked on their \emph{Balanced Error Rate} score on the official validation datasets.
 \end{itemize}
 
-
-In this section, you will want to clearly define the problem that you are trying to solve, including the strategy (outline of tasks) you will use to achieve the desired solution. You should also thoroughly discuss what the intended solution will be for this problem. Questions to ask yourself when writing this section:
-- Is the problem statement clearly defined? Will the reader understand what you are expecting to solve?
-- Have you thoroughly discussed how you will attempt to solve the problem?
-- Is an anticipated solution clearly defined? Will the reader understand what results you are looking for?
-
 \subsection{Metrics}
-In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
-- Are the metrics you’ve chosen to measure the performance of your models clearly discussed and defined?
-- Have you provided reasonable justification for the metrics chosen based on the problem and solution?
+
+The primary scoring metric will be the \emph{Balanced Error Rate} as used in the original NIPS 2003 Challenge ~\cite{nips03evaluation} and explained in section \ref{model_val}. The BER takes the unbalanced nature of one of the datasets into account, and also makes it easier to compare my own results with those of the wining entries. But I will also supply metrics such as \emph{f1 score} and \emph{area under curve} to the final rankings, so that models can be compared on these metrics as well.
+
 
 
 \section{II. Analysis}
 (approx. 2-4 pages)
 
 \subsection{Data Exploration}
+
+\subsubsection{Datasets}
+
+The NIPS 2003 Feature Selection Challenge had five datasets. Originally the participants where given no information about the data other than that inputs had been scaled to integers between 0 and 999 for four of the five dataset, and that inputs where binary for the 5th dataset. And target variables where classified as either -1 or 1, making all the modelling problems binary classification type problems. Additionally all datasets had `false' features (called `probes' by the organizers) added, and the order of the features were randomized to make it more difficult to extract `good' features.
+
+The five datasets vary widely in number of features and number of observations. The five datasets are:
+\begin{description}
+\item [ARCENE] Non sparse. Features: 10 000. Observations, training data: 100. Observations, validation data: 100. Arcene is based on mass-spectrometry data, and the underlying task is to separate cancer-patients from healthy patients. 
+\item [DEXTER] Sparse Integer. Features: 20 000. Observations, training data: 300. Observations, validation data: 300. Dexter is based on Thorsten Joachims in the “bag-of-words” representation. The underlying task is to separate which Reuters articles are about `corporate acquisitions' and which are not.
+\item[DOROTHEA] Sparse binary. Features: 100 000.  Observations, training data: 800.  Observations, validation data: 350. Dorothea is based on a drug-discovery dataset, and the task is to classify molecules as active (binding to thrombin) or inactive.
+\item[GISETTE] Non sparse. Features: 5000. Observations, training data: 6000. Observations, validation data: 1000. Gisette is based on a handwritten digit dataset. The task is to separate 4 from 9.
+\item[MADELON] Non sparse. Features: 500. Observations, training data: 2000. Observations, validation data: 600. Madelon is an artificially created dataset. The set contains 32 clusters of points based the vertices of a five dimensional hypercube and randomly labeled 1 or -1.
+\end{description}
+
+
+
 In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
 - If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?
 - If a dataset is present for this problem, are statistics about the dataset calculated and reported? Have any relevant results from this calculation been discussed?
@@ -123,8 +149,9 @@ In this section, you will need to discuss the process of improvement you made up
 (approx. 2-3 pages)
 
 \subsection{Model Evaluation and Validation}
+\label{model_val}
 
-\subsubsection{Balanced Error Rate}\label{BER}
+\subsubsection{Balanced Error Rate}
 In this section, the final model and any supporting qualities should be evaluated in detail. It should be clear how the final model was derived and why this model was chosen. In addition, some type of analysis should be used to validate the robustness of this model and its solution, such as manipulating the input data or environment to see how the model’s solution is affected (this is called sensitivity analysis). Questions to ask yourself when writing this section:
 - Is the final model reasonable and aligning with solution expectations? Are the final parameters of the model appropriate?
 - Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?
