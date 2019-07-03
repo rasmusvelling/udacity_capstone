@@ -9,6 +9,7 @@
 \documentclass[12pt]{article}
 \usepackage[a4paper]{geometry}
 \usepackage{cite}
+\usepackage{graphicx}
 \setcounter{secnumdepth}{2}
 \setcounter{tocdepth}{2}
 
@@ -97,7 +98,12 @@ The five datasets vary widely in number of features and number of observations. 
 \item[MADELON] Non sparse. Features: 500. Observations, training data: 2000. Observations, validation data: 600. Madelon is an artificially created dataset. The set contains 32 clusters of points based the vertices of a five dimensional hypercube and randomly labeled 1 or -1.
 \end{description}
 
-
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics{fig__fig1.eps}
+    \caption{\label{fig:sin_cos} Plot of the sine and cosine functions.}
+  \end{center}
+\end{figure}
 
 In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
 - If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?

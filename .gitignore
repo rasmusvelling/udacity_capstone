@@ -10,6 +10,9 @@
 *.xls
 *.dat
 
+# figures
+*.eps
+
 
 # Python specific stuff
 *.pyc
