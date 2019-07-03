@@ -23,7 +23,7 @@ rankings = []
 
 for dataset in datasets:
     # load data
-    # dataset = datasets[0]
+    # dataset = datasets[1]
     print("\n\n####################\n"+ dataset)
     data = src.load_data(dataset)
 
