@@ -10,6 +10,8 @@
 \usepackage[a4paper]{geometry}
 \usepackage{cite}
 \usepackage{graphicx}
+\usepackage{xcolor}
+\pagecolor{white}
 \setcounter{secnumdepth}{2}
 \setcounter{tocdepth}{2}
 
@@ -98,24 +100,29 @@ The five datasets vary widely in number of features and number of observations. 
 \item[MADELON] Non sparse. Features: 500. Observations, training data: 2000. Observations, validation data: 600. Madelon is an artificially created dataset. The set contains 32 clusters of points based the vertices of a five dimensional hypercube and randomly labeled 1 or -1.
 \end{description}
 
-\begin{figure}[t]
+\subsubsection{Distribution of target variables}
+
+Figure \ref{fig:distr_target_var} shows how the target variable is distributed across the five datasets. We see that Dexter, Gisette and Madelon are perfectly balanced. Arcene is not perfectly balanced, but only moderately unbalanced. The Dorothea dataset is quite unbalanced with only 78 of 800 observations being of class +1.
+
+\begin{figure}[h]
   \begin{center}
-    \includegraphics{fig__fig1.eps}
-    \caption{\label{fig:sin_cos} Plot of the sine and cosine functions.}
+    \includegraphics[width=417pt]{fig__distr_target_var.pdf}
+    \caption{\label{fig:distr_target_var} Distribution of target variable in datasets}
   \end{center}
 \end{figure}
 
-In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
-- If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?
-- If a dataset is present for this problem, are statistics about the dataset calculated and reported? Have any relevant results from this calculation been discussed?
-- If a dataset is **not** present for this problem, has discussion been made about the input space or input data for your problem?
-- Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)
+\subsubsection{Distribution of input variables}
 
-\subsection{Exploratory Visualization}
-In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
-- Have you visualized a relevant characteristic or feature about the dataset or input data?
-- Is the visualization thoroughly analyzed and discussed?
-- If a plot is provided, are the axes, title, and datum clearly defined?
+Figure \ref{fig:distr_input_var} shows histograms across columns in input data for the five dataset. We see different kinds of distributions. Madelon, the artificial dataset, looks to be quite normally distributed in terms of input values per column.
+
+The non-artificial datasets all have a lot of zero-values, especially Dexter and Dorothea. Note also that Dorothea has only zeros or ones, thus the `histogram' is illustrated as a series of bar charts (one per column).
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=417pt]{fig__distr_input_var.pdf}
+    \caption{\label{fig:distr_input_var} Histograms of input variable in datasets}
+  \end{center}
+\end{figure}
 
 \subsection{Algorithms and Techniques}
 In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
