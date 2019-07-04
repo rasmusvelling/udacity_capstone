@@ -1,11 +1,9 @@
 import sklearn.svm as svm
-import pandas as pd
-import src
-
 # dataset = 'ARCENE'
 # data = src.load_data(dataset)
 
-def svc_lin(data, params=None):
+
+def mod_svc_lin(data, params=None):
 
     # if params not set
     if params is None:
@@ -26,7 +24,7 @@ def svc_lin(data, params=None):
     return model
 
 
-def svc_poly(data, params=None):
+def mod_svc_poly(data, params=None):
 
     # if params not set
     if params is None:
@@ -39,6 +37,9 @@ def svc_poly(data, params=None):
     X = data['X_train']
     y = data['y_train']
 
+    if 'dataset' in params:
+        pass
+
     model = svm.SVC(
         gamma=params['gamma'],
         C=params['C'],
@@ -50,7 +51,7 @@ def svc_poly(data, params=None):
     return model
 
 
-def svc_rbf(data, params=None):
+def mod_svc_rbf(data, params=None):
 
     # if params not set
     if params is None:
