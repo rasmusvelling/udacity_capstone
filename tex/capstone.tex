@@ -124,7 +124,44 @@ The non-artificial datasets all have a lot of zero-values, especially Dexter and
   \end{center}
 \end{figure}
 
+\subsection{Dimensionality Reduction Techniques}
+
+Several dimensionality reduction or feature selection methods will be applied. They will be outlined below
+
+\subsubsection{PCA}
+
+PCA is one of the most well-known dimensionality reduction techniques. However it was still a vital part of the winning entry to the NIPS 2003 Feature Selection Challenge, where it was used by Radford M. Neal and Jianguo Zhang - along side a pretty complax implemention of Bayesian Neural Networks and Dirichlet Diffusion Trees, ~\cite{nips03book}, Chapter 10.
+
+This capstone project will feature four simple implementations of PCA, where the data is reduced to 5, 10, 25 and 50 features respectively - no matter the original amount of features.
+
+The PCA will have the benefit that the components will be linear combinations of multiple inputs, and thus we hope to be able to `capture' a lot of information in relatively few features. This might be a benefit on the Arcene dataset which we know has about 1500 original inputs (and the about 8500 false probes). 
+
+On a dataset like madelon, which orginially only had 5 genuine inputs, we would perhaps want to opt for another kind of feature selection, where we can `cherry pick' the best inputs. Univariate feature selection could possibly such a tool.
+
+\subsubsection{Univariate Feature Selection}
+
+Univariate Feature Selection was also used in the winning entry by Radford M. Neal and Jianguo Zhang, ~\cite{nips03book}, Chapter 10.
+
+In this capstone I am implementing the $SelectKBest$ univariate feature selection function found in SciKi tLearn. I am selecting the 5, 10, 25 and 50 best features respectively.
+
+Which features are the best is being decided by the $mutual\_info\_classif$ scorer function also from SciKit Learn's feature selection module, which ranks the features by the mutual information between a given feature and the target variable.
+
+The upside is ofcourse that we are left with very strong candidates for the best explaining features. The downside of this selection method is, that it can take quite a while to do this process over a given dataset. I found that this way of doing univariate feature selection was between $10x$ and $100x$ slower than PCA and Random Projections.
+
+\subsubsection{Random Projections}
+
+Random projections area way of reducion dimensionality on high dimensional datasets. The idea is, that if one is given a set of points in a high-dimensional space, it is possible to roughly maintain the distance between the point while reducing the number of dimensions. This is called the \emph{Johnson-Lindenstrauss lemma}, ~\cite{wiki:jll}.
+
+I will be implementing both SparseRandomProjection and Gaussian Random Project from SciKit Learn. Both will reduce the dataset to 5, 10, 25 and 50 features respectively.
+
+
+\subsection{Model Frameworks \& Algorithms}
+
+\subsubsection{SVC Polynomial}
+
+
 \subsection{Algorithms and Techniques}
+
 In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
 - Are the algorithms you will use, including any default variables/parameters in the project clearly defined?
 - Are the techniques to be used thoroughly discussed and justified?
