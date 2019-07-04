@@ -18,7 +18,7 @@ def svc_lin(data, params=None):
 
     model = svm.LinearSVC(
         C=params['C'],
-        max_iter=100000
+        max_iter=25000000
     )
 
     model.fit(X, y)
