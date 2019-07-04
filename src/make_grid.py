@@ -51,29 +51,28 @@ def make_grid():
     # make all model grids, join with dimred
     models = []
 
-    # SVC line
+    # SVC lin
     models_tmp = {
-        'model_framework': ['svc_lin'],
-        'C': [0.25, 1, 2.5]
+        'model_framework': ['mod_svc_lin'],
+        'C': [1]
     }
     models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
 
-    # # SVC poly
-    # models_tmp = {
-    #     'model_framework': ['svc_poly'],
-    #     'gamma': [0.25, 1, 2.5],
-    #     'C': [0.25, 1, 2.5],
-    #     'degree': [1,3,5]
-    # }
-    # models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
-    #
-    # # SVC rbf
-    # models_tmp = {
-    #     'model_framework': ['svc_rbf'],
-    #     'gamma': [0.25, 1, 2.5],
-    #     'C': [0.25, 1, 2.5]
-    # }
+    # SVC lin
+    models_tmp = {
+        'model_framework': ['mod_svc_poly'],
+        'C': [1],
+        'gamma': [1],
+        'degree': [1,3,9]
+    }
     models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
+
+    # XGBoost
+    models_tmp = {
+        'model_framework': ['mod_xgboost']
+    }
+    models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
+
 
     models = pd.concat(models, sort=True)
     models = models[['model_framework'] + [col for col in models.columns.tolist() if col != 'model_framework']]
@@ -83,7 +82,7 @@ def make_grid():
     # final join all
     models['key'] = 1
     dimred['key'] = 1
-    grid = pd.merge(models, dimred, on='key').drop('key', axis=1)
+    grid = pd.merge(dimred, models, on='key').drop('key', axis=1)
 
     print("rows in grid == datasets * models * dimred: " + str(models.shape[0] * dimred.shape[0] == grid.shape[0]))
     grid = src.hash_and_deduplicate(grid)
