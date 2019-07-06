@@ -51,6 +51,24 @@ def make_grid():
     # make all model grids, join with dimred
     models = []
 
+    # Logistic Reg
+    models_tmp = {
+        'model_framework': ['mod_logisticreg']
+    }
+    models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
+
+    # LightGBM
+    models_tmp = {
+        'model_framework': ['mod_lightgbm']
+    }
+    models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
+
+    # XGBoost
+    models_tmp = {
+        'model_framework': ['mod_xgboost']
+    }
+    models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
+
     # SVC lin
     models_tmp = {
         'model_framework': ['mod_svc_lin'],
@@ -58,18 +76,11 @@ def make_grid():
     }
     models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
 
-    # SVC lin
+    # SVC poly
     models_tmp = {
         'model_framework': ['mod_svc_poly'],
         'C': [1],
-        'gamma': [1],
-        'degree': [1,3,9]
-    }
-    models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
-
-    # XGBoost
-    models_tmp = {
-        'model_framework': ['mod_xgboost']
+        'degree': [2,3]
     }
     models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
 

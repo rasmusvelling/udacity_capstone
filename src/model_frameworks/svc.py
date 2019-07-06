@@ -41,7 +41,7 @@ def mod_svc_poly(data, params=None):
         pass
 
     model = svm.SVC(
-        gamma=params['gamma'],
+        gamma='auto',
         C=params['C'],
         kernel='poly',
         degree=params['degree'])
