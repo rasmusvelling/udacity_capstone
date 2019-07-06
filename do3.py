@@ -36,14 +36,17 @@ if test_mode:
 
 print("Reduction")
 num_cores = multiprocessing.cpu_count()
-results1 = Parallel(n_jobs=num_cores)(delayed(src.do_reduce)(idx=idx, params=params) for idx, params in grid[0:20].iterrows())
+results0 = Parallel(n_jobs=num_cores)(delayed(src.do_reduce)(idx=idx, params=params) for idx, params in grid.iterrows())
 
 
 #################################
 
-print("fit and predict")
-grid = grid.sort_index()
+print("fit")
+#grid = grid.sort_index()
 num_cores = multiprocessing.cpu_count()
-results1 = Parallel(n_jobs=num_cores)(delayed(src.do_fit)(idx=idx, params=params) for idx, params in grid[0:20].iterrows())
+results1 = Parallel(n_jobs=num_cores)(delayed(src.do_fit)(idx=idx, params=params) for idx, params in grid.iterrows())
+
+
+print("Predict")
 results2 = Parallel(n_jobs=num_cores)(delayed(src.do_predict)(idx=idx, params=params) for idx, params in grid.iterrows())
 
