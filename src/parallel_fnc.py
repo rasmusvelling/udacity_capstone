@@ -25,7 +25,7 @@ def do_reduce(idx, params, test_mode=True):
         # pickle reduced data
         pickle.dump(data_reduced, open(data_path, 'wb'))
 
-        total_time = round(time.time() - start, ndigits=1)
+        total_time = round(time.time() - start, ndigits=2)
         time_out = {
             'data_hash_id': params['data_hash_id'],
             'time_reduce': total_time
@@ -52,7 +52,7 @@ def do_fit(idx, params, test_mode=True):
         # pickle final model fit
         pickle.dump(model_fitted, open(model_path, 'wb'))
 
-        total_time = round(time.time() - start, ndigits=1)
+        total_time = round(time.time() - start, ndigits=2)
         time_out = {
             'hash_id': params['hash_id'],
             'time_fit': total_time
