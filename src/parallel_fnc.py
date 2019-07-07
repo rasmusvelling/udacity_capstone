@@ -54,11 +54,11 @@ def do_fit(idx, params, test_mode=True):
 
         total_time = round(time.time() - start, ndigits=1)
         time_out = {
-            'data_hash_id': params['data_hash_id'],
-            'time_reduce': total_time
+            'hash_id': params['hash_id'],
+            'time_fit': total_time
         }
         time_out = pd.DataFrame(time_out, index=[idx])
-        time_out.to_csv(os.path.join('cache', 'models_fitted_time', (params['data_hash_id'] + '.csv')))
+        time_out.to_csv(os.path.join('cache', 'models_fitted_time', (params['hash_id'] + '.csv')))
 
         print(str(idx) + "  fit time:  " + str(total_time))
 

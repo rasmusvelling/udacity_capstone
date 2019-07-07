@@ -69,20 +69,20 @@ def make_grid():
     }
     models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
 
-    # SVC lin
-    models_tmp = {
-        'model_framework': ['mod_svc_lin'],
-        'C': [1]
-    }
-    models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
+    # # SVC lin
+    # models_tmp = {
+    #     'model_framework': ['mod_svc_lin'],
+    #     'C': [1]
+    # }
+    # models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
 
-    # SVC poly
-    models_tmp = {
-        'model_framework': ['mod_svc_poly'],
-        'C': [1],
-        'degree': [2,3]
-    }
-    models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
+    # # SVC poly
+    # models_tmp = {
+    #     'model_framework': ['mod_svc_poly'],
+    #     'C': [1],
+    #     'degree': [2,3]
+    # }
+    # models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
 
 
     models = pd.concat(models, sort=True)
@@ -99,9 +99,5 @@ def make_grid():
     grid = src.hash_and_deduplicate(grid)
     print('Rows in grid:  ' + str(grid.shape[0]) + ".  Len unique hash_id: " + str(
         len(grid['hash_id'].unique().tolist())))
-
-    grid['time_reduce'] = -1
-    grid['time_fit'] = -1
-    grid['BER'] = 1
 
     return grid

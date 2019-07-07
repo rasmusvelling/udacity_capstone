@@ -34,19 +34,36 @@ if test_mode:
     from sklearn.utils import shuffle
     grid = shuffle(grid)
 
-print("Reduction")
+
+#################################
+print("\n\n\nReduction")
 num_cores = multiprocessing.cpu_count()
 results0 = Parallel(n_jobs=num_cores)(delayed(src.do_reduce)(idx=idx, params=params) for idx, params in grid.iterrows())
 
-
-#################################
-
-print("fit")
+print("\n\n\nfit")
 #grid = grid.sort_index()
 num_cores = multiprocessing.cpu_count()
 results1 = Parallel(n_jobs=num_cores)(delayed(src.do_fit)(idx=idx, params=params) for idx, params in grid.iterrows())
 
-
-print("Predict")
+print("\n\n\nPredict")
 results2 = Parallel(n_jobs=num_cores)(delayed(src.do_predict)(idx=idx, params=params) for idx, params in grid.iterrows())
 
+##################################
+grid = grid.sort_index()
+
+#################################
+reduce_times = os.listdir(os.path.join('cache', 'data_reduced_time'))
+reduce_times = [pd.read_csv(os.path.join('cache', 'data_reduced_time', x), index_col=0) for x in reduce_times]
+reduce_times = pd.concat(reduce_times)
+
+grid = pd.merge(grid, reduce_times, how='left', left_on='data_hash_id', right_on='data_hash_id')
+
+
+#################################
+fit_times = os.listdir(os.path.join('cache', 'models_fitted_time'))
+fit_times = [pd.read_csv(os.path.join('cache', 'models_fitted_time', x), index_col=0) for x in fit_times]
+fit_times = pd.concat(fit_times)
+
+grid = pd.merge(grid, fit_times, how='left', left_on='hash_id', right_on='hash_id')
+
+grid.to_csv(os.path.join('cache', 'grid_final.csv'))
