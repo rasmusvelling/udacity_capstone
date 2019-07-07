@@ -69,11 +69,11 @@ def make_grid():
     }
     models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
 
-    # SVC lin
-    models_tmp = {
-        'model_framework': ['mod_svc_lin']
-    }
-    models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
+    # # SVC lin
+    # models_tmp = {
+    #     'model_framework': ['mod_svc_lin']
+    # }
+    # models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
 
     # # SVC poly
     # models_tmp = {
