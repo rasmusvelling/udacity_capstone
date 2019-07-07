@@ -22,7 +22,7 @@ def make_grid():
     dimred_tmp = {
         'dataset': datasets,
         'reducer': ['reducer_pca'],
-        'n_components': [5, 10, 25, 50]
+        'n_components': [5, 10, 15, 25, 35, 50, 75]
     }
     dimred.append(tidy_dimred(dimred_tmp))
 
@@ -30,7 +30,7 @@ def make_grid():
     dimred_tmp = {
         'dataset': datasets,
         'reducer': ['reducer_univarkbest'],
-        'n_components': [5, 10, 25, 50]
+        'n_components': [5, 10, 15, 25, 35, 50, 75]
     }
     dimred.append(tidy_dimred(dimred_tmp))
 
@@ -38,7 +38,7 @@ def make_grid():
     dimred_tmp = {
         'dataset': datasets,
         'reducer': ['reducer_rand_proj_sparse', 'reducer_rand_proj_gauss'],
-        'n_components': [5, 10, 25, 50]
+        'n_components': [5, 10, 15, 25, 35, 50, 75]
     }
     dimred.append(tidy_dimred(dimred_tmp))
 
@@ -71,8 +71,7 @@ def make_grid():
 
     # SVC lin
     models_tmp = {
-        'model_framework': ['mod_svc_lin'],
-        'C': [1]
+        'model_framework': ['mod_svc_lin']
     }
     models.append(pd.DataFrame(src.expand_grid(**models_tmp)))
 

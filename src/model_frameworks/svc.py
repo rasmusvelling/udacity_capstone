@@ -15,7 +15,6 @@ def mod_svc_lin(data, params=None):
     y = data['y_train']
 
     model = svm.LinearSVC(
-        C=params['C'],
         max_iter=9000000
     )
 
