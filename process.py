@@ -66,4 +66,4 @@ fit_times = pd.concat(fit_times)
 
 grid = pd.merge(grid, fit_times, how='left', left_on='hash_id', right_on='hash_id')
 
-grid.to_csv(os.path.join('cache', 'grid_final.csv'))
+grid.to_csv(os.path.join('cache', 'grid_2.csv'))

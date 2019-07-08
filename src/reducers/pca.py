@@ -5,15 +5,16 @@ from sklearn.pipeline import Pipeline
 
 
 def reducer_pca(data, params):
+    # if no params set
+    if params is None: params = {'n_components': 5}
 
-    if params is None:
-        params = {
-            'n_components': 5
-        }
-
-    pipeline = Pipeline([('scaling', StandardScaler()), ('pca', PCA(n_components=params['n_components']))])
+    # normalization, pca pipeline
+    pipeline = Pipeline(
+        [('scaling', StandardScaler()),
+        ('pca', PCA(n_components=params['n_components']))])
     pipeline.fit(data['X_train'])
 
+    # output
     do = deepcopy(data)
     do['X_train'] = pipeline.transform(data['X_train'])
     do['X_valid'] = pipeline.transform(data['X_valid'])

@@ -6,6 +6,7 @@ import datetime
 import src
 import src.reducers
 import src.model_frameworks
+from sklearn.metrics import roc_auc_score, f1_score
 
 
 def do_reduce(idx, params, test_mode=True):
@@ -67,22 +68,29 @@ def do_predict(idx, params):
     # do prediction
     # load model
     model_path = os.path.join('cache', 'models_fitted', (params['hash_id'] + '.pkl'))
-    model_fitted = pickle.load(open(model_path, 'rb'))
 
-    # load data
-    data_path = os.path.join('cache', 'data_reduced', (params['data_hash_id'] + '.pkl'))
-    data = pickle.load(open(data_path, 'rb'))
+    if os.path.isfile(model_path):
+        model_fitted = pickle.load(open(model_path, 'rb'))
 
-    # predict validation set
-    y_valid_hat = model_fitted.predict(data['X_valid'])
+        # load data
+        data_path = os.path.join('cache', 'data_reduced', (params['data_hash_id'] + '.pkl'))
+        data = pickle.load(open(data_path, 'rb'))
 
-    # output BER
-    ber = src.ber(y=data['y_valid'].tolist(), y_hat=y_valid_hat.tolist())
-    predict_ber = {
-        'hash_id': params['hash_id'],
-        'BER': ber
-    }
-    predict_ber = pd.DataFrame(predict_ber, index=[idx])
-    predict_ber.to_csv(os.path.join('cache', 'predict_ber', (params['hash_id'] + '.csv')))
-    print("Predicted BER:  " + str(ber))
+        # predict validation set
+        y_valid_hat = model_fitted.predict(data['X_valid'])
+
+        # output BER
+        ber = src.ber(y=data['y_valid'].tolist(), y_hat=y_valid_hat.tolist())
+        roc_auc = roc_auc_score(y_true=data['y_valid'].tolist(), y_score=y_valid_hat.tolist())
+        f1 = f1_score(y_true=data['y_valid'].tolist(), y_pred=y_valid_hat.tolist())
+
+        predict_ber = {
+            'hash_id': params['hash_id'],
+            'BER': ber,
+            'ROC_AUC': roc_auc,
+            'F1': f1
+        }
+        predict_ber = pd.DataFrame(predict_ber, index=[idx])
+        predict_ber.to_csv(os.path.join('cache', 'predict_ber', (params['hash_id'] + '.csv')))
+        print("Predicted BER:  " + str(ber))
 
