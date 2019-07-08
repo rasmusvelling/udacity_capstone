@@ -4,12 +4,14 @@
 /data/*
 /cache/*
 
-
 # Data files
 *.csv
 *.xlsx
 *.xls
 *.dat
+
+# figures
+*.eps
 
 
 # Python specific stuff
