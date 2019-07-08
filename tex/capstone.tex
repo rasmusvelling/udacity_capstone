@@ -8,10 +8,15 @@
 
 \documentclass[12pt]{article}
 \usepackage[a4paper]{geometry}
+
+\usepackage{url}
 \usepackage{cite}
+\usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{listings}
 \usepackage{xcolor}
 \pagecolor{white}
+
 \setcounter{secnumdepth}{2}
 \setcounter{tocdepth}{2}
 
@@ -32,33 +37,38 @@ This is the paper's abstract \ldots
 
 \subsubsection{Dimensionality reduction and feature selection}
 
-Dimensionality reduction and feature selection is at the heart of applied statistics and data science. In it's essence, dimension reduction is the practice of taking $p$ available features (also known as dimensions) and reducing them to $p_{reduced} <= p$, so that we end up with fewer features than before. This can be done in many ways ~\cite{wiki:dimred}, and feature selection is, in short, one particular way of doing so, where one `cherry picks' a subset of features based on some criteria, often a statistical scoring like the Akaike information criterion or likewise ~\cite{wiki:feature}.
+Dimensionality reduction and feature selection is at the heart of applied statistics and data science. In it's essence, \emph{dimensionality reduction} is the practice of taking $p$ available features (also known as dimensions) and reducing them to $p_{reduced} < p$, so that we end up with fewer features than before, thus, if done right, simplifying the problem at hand. 
 
-Among other types of dimensionality reduction methods commonly used are Principal Component Analysis (PCA) and Random Projections, which both are transformations of the underlying data, so that the new set of features are (often linear) combinations of the original inputs. This has both advantages, in that new, more informationally rich features can arise, and that the new dataset, with fewer features is easier to process; and disadvantages, in that the blurring of underlying features can make interpratability difficult and possible loss of information, of not done carefully.
+Dimensionality reduction can be done in many ways ~\cite{wiki:dimred}, and \emph{feature selection} is, in short, one particular way of doing so, where one `cherry picks' a subset of features based on some criteria, often a statistical scoring like the Akaike information criterion or likewise ~\cite{wiki:feature}.
 
-There can be practical as well as scientific motivations for doing dimensionality reduction in general and/or feature selection in particular. Dimensionality reduction in general, especially when dealing with hundreds, thousands, or more, features is often born out of a shear practical motivation of wanting to speed up computational processing time or making data easier to comprehend and vizualize.
+Among other types of dimensionality reduction methods commonly used are Principal Component Analysis (PCA) and Random Projections, which both are transformations of the underlying data, so that the new set of features are linear combinations of the original inputs. This has both advantages, in that new, more informationally rich features can arise, and that the new dataset, with fewer features is easier to process; and disadvantages, in that the blurring of underlying features can make interpratability difficult and possible loss of information, if not done carefully. \\
 
-Feature selection in particular, when done right, will also yield the benefits of quicker processing and easier understnading, but has the additional benefits of providing very concrete information about what particular inputs are of (statistical) importance to the problem at hand.
+\noindent There can be practical as well as scientific motivations for doing dimensionality reduction in general and/or feature selection in particular. 
+
+Dimensionality reduction in general, especially when dealing with hundreds, thousands, or more, features is often born out of a shear practical motivation of wanting to speed up computational processing time or making data easier to comprehend and vizualize.
+
+Feature selection in particular, when done right, will also yield the benefits of quicker processing of the final dataset and easier comprehension of the total data, but has the additional benefits of providing very concrete information about what particular inputs are of (statistical) importance to the problem at hand.
 
 \subsubsection{Making sense of mess}
 
-In commercial as well as academic settings, it is often common to face statistical problems, where an abundance of features are given, without any clear indication of which are import, and which are not. `Throwing everything at the model', will result in something that takes hours, maybe days, to process, and possibly without any usefull output. Thus the first problem at hand becomes that of `boiling down' the data to something that can be processed and will deliver explanatory value ~\cite{mboostintro}.
+In commercial as well as academic settings, it is often common to face statistical problems, where an abundance of features are given, without any clear indication of which are important, and which are not. `Throwing everything at the model', will result in something that takes hours, maybe days, to process, and possibly without any usefull output. Thus the first problem at hand becomes that of `boiling down' the data to something that can be processed and will deliver explanatory value ~\cite{mboostintro}.
 
-And even if we could process all available inputs with decent speed and quality, a lot of times supplying insights to a business or academic research also necessitates providing interpretability of some sorts and not just a `black box'. So eventually we will also want to strive for the `most simple explanation' that still fits data reasonably well ~\cite{wiki:occam}
+And even if we could process all available inputs with decent speed and quality, a lot of times supplying insights to a business or academic research also necessitates providing interpretability of some sorts and not just a `black box'. So eventually we will also want to strive for the `most simple explanation' that still fits data reasonably well ~\cite{wiki:occam}. \\
 
-At the same time in many realworld settings, especially in businesses, a few number of data scientist and analyst are expected to solve problems across many domains like marketing and sales, operations, logistics, infrastructure, HR and many more, while at the same time being required to deliver results fairly quickly and of a decent standard. In these types of settings flexibility and genericity become important model and framework aspects, as the analysis and data science teams will want to deliver scalable and easily maintainable solutions to the problems posed by the surrounding business.
 
-Thus it is of interest to explore models and frameworks which can help us deal with both feature selection and or dimensionality reduction in semi-automatic ways, as this will yield better models, speed up processing and save us precious time at work.
+\noindent At the same time in many realworld settings, especially in businesses, a limited number of data scientist and analyst are expected to solve problems across many domains like marketing and sales, operations, logistics, infrastructure, HR and many more, while at the same time being required to deliver results fairly quickly and of a decent standard. In these types of settings flexibility, genericity, and speed, become important model and framework aspects, as the analysis and data science teams will want to deliver scalable and easily maintainable solutions to the problems posed by the surrounding business.
+
+Thus it is of interest to explore models and frameworks which can help us deal with both feature selection and/or dimensionality reduction in semi-automatic ways, as this will yield better models, speed up processing and save us precious time at work.
 
 \subsubsection{NIPS 2003 Feature Selection Challenge}
 
-The NIPS 2003 Feature Selection Challenge ~\cite{nips03workshop} mimicked the above-mentioned requirements into one competition, where participating teams were asked to come up with one model, or framework, which was then implemented across five datasets, sourced from different academic domains. The final score and ranking was then calculated as the average of the \emph{Balanced Error Rate} (defined in section \ref{model_val}) on each dataset, thus, requiring the teams to come up with flexible and generic models, that where somehow able to distinguish useable features from non-useable.
+The NIPS 2003 Feature Selection Challenge ~\cite{nips03workshop} mimicked the above-mentioned requirements into one competition, where participating teams were asked to come up with one model, or framework, which was then implemented across five datasets, sourced from different academic domains. The final score and ranking was then calculated as the average of the \emph{Balanced Error Rate} (defined in section \ref{model_val}) on each dataset, thus, requiring the teams to come up with flexible and generic models, that where somehow able to distinguish useable features from non-useable, or at least able to extract value from an abundance of supplied inputs - many of which were intentionally created noise.
 
 \subsection{Problem Overview}
 
 Inspired by a specific, high dimensional, sparse data problem at work, I wanted to investigate flexible and broad methods for dealing with high dimensional, sparse classification problems. And while researching on this topic, I stumbled across the NIPS 2003 Challenge, which I in many ways feel reflects a lot of the problems I, as a Data Analyst, deal with in my day-to-day work.
 
-In this Capstone Project I will explore model methods and frameworks inspired by the NIPS 2003 Feature Selection Challenge applied to the five datasets made available for the same challenge. A key component of the challenge was that the teams were scored on how well a \emph{single model type} would perform across all five datasets, thus requiring model frameworks to be flexible and generic. I will keep this dogma throughout this capstone as well.
+In this Capstone Project I will explore model methods and frameworks inspired by the NIPS 2003 Feature Selection Challenge applied to the five datasets made available for the same challenge. A key component of the challenge was that the teams were scored on how well a \emph{single model type} would perform across all five datasets, thus requiring model frameworks to be flexible and generic.
 
 Winning entries of the Challenge are described in the book Feature Extraction: Foundations and Applications ~\cite{nips03book} which came to life as a product of the best entries in the NIPS 2003 Challenge. Many of the winning entries are coded in Matlab or C, so this in this Capstone project I will focus on exploring how close one can come to the winning entries using readily available and popular tools in Python.
 
@@ -66,11 +76,14 @@ Winning entries of the Challenge are described in the book Feature Extraction: F
 \subsection{Problem Statement}
 
 \subsubsection{Problem}
-How well do python-implementations (using readily available tools like sklearn) of “winning” models and other popular algorithms perform on the NIPS 2003 Challenge datasets?
+\begin{itemize}
+\item How do different dimensionality reduction and feature selection methods compare in terms of processing time and final prediction performance?
+\item How well do easy python-implementations, using readily available tools like sklearn and XGBoost, perform on the NIPS 2003 Challenge datasets?
+\end{itemize}
 
 \subsubsection{Solution}
 \begin{itemize}
-\item I will implement a series of classification models in python across the five datasets from the NIPS 2003 Feature Selection Challenge. 
+\item I will implement a series of dimensionality reduction methods and classification models in python across the five datasets from the NIPS 2003 Feature Selection Challenge. 
 \item These models will be inspired by the winning entries from the NIPS 2003 Feature Selection Challenge, described in ~\cite{nips03book}, as well as more recent, popular models like XGBOOST ~\cite{xgboostcite}, which has enjoyed a lot of success in challenges at kaggle.
 \item I will apply the same models to all five datasets (as done in the original NIPS 2003 Challenge), to test the genericity and flexibility of the proposed solutions.
 \item The models will be ranked on their \emph{Balanced Error Rate} score on the official validation datasets.
@@ -78,18 +91,36 @@ How well do python-implementations (using readily available tools like sklearn) 
 
 \subsection{Metrics}
 
-The primary scoring metric will be the \emph{Balanced Error Rate} as used in the original NIPS 2003 Challenge ~\cite{nips03evaluation} and explained in section \ref{model_val}. The BER takes the unbalanced nature of one of the datasets into account, and also makes it easier to compare my own results with those of the wining entries. But I will also supply metrics such as \emph{f1 score} and \emph{area under curve} to the final rankings, so that models can be compared on these metrics as well.
+The primary scoring metric will be the \emph{Balanced Error Rate} as used in the original NIPS 2003 Challenge ~\cite{nips03evaluation}. The BER takes the unbalanced nature of one of the datasets into account, and also makes it easier to compare my own results with those of the wining entries. 
+
+The BER is defined using the classification \emph{confusion matrix} shown in Table \ref{tab:confusionmat}, and plugging the relevant numbers, $a$, $b$, $c$ and $d$, into the equation shown in (\ref{eq:ber}).
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rrrr}
+\toprule
+{}		&			& Prediction	& \\
+{}		&			& Class $-1$	& Class $+1$ \\
+\midrule
+Truth	& Class $-1$	& $a$		& $b$ \\
+{}		& Class $+1$	& $c$		& $d$ \\
+\bottomrule
+\end{tabular}
+\caption{\label{tab:confusionmat} Confusion matrix}
+\end{table}
+
+\begin{equation} \label{eq:ber}
+BER = \frac{1}{2} * \left( \frac{b}{a+b} + \frac{c}{c+d} \right)
+\end{equation}
 
 
+\section{Data Exploration}
 
-\section{II. Analysis}
-(approx. 2-4 pages)
+\subsection{Datasets}
 
-\subsection{Data Exploration}
+The NIPS 2003 Feature Selection Challenge had five datasets. Originally the participants where given no background information about the data, and no column labels where given either, as not to bias the selection / reduction process with the participating teams. Additionally, teams were told, that all datasets had `false' features (called `probes' by the organizers) added, and the order of the features were randomized to make it more difficult to extract `good' features.
 
-\subsubsection{Datasets}
-
-The NIPS 2003 Feature Selection Challenge had five datasets. Originally the participants where given no information about the data other than that inputs had been scaled to integers between 0 and 999 for four of the five dataset, and that inputs where binary for the 5th dataset. And target variables where classified as either -1 or 1, making all the modelling problems binary classification type problems. Additionally all datasets had `false' features (called `probes' by the organizers) added, and the order of the features were randomized to make it more difficult to extract `good' features.
+So the only available info, was the apparent info: all inputs had been scaled to integers between 0 and 999 for four of the five dataset, and inputs where binary for the 5th dataset. And target variables where classified as either -1 or 1, making all the modelling problems binary classification type problems.
 
 The five datasets vary widely in number of features and number of observations. The five datasets are:
 \begin{description}
@@ -100,7 +131,7 @@ The five datasets vary widely in number of features and number of observations. 
 \item[MADELON] Non sparse. Features: 500. Observations, training data: 2000. Observations, validation data: 600. Madelon is an artificially created dataset. The set contains 32 clusters of points based the vertices of a five dimensional hypercube and randomly labeled 1 or -1.
 \end{description}
 
-\subsubsection{Distribution of target variables}
+\subsection{Distribution of target variables}
 
 Figure \ref{fig:distr_target_var} shows how the target variable is distributed across the five datasets. We see that Dexter, Gisette and Madelon are perfectly balanced. Arcene is not perfectly balanced, but only moderately unbalanced. The Dorothea dataset is quite unbalanced with only 78 of 800 observations being of class +1.
 
@@ -111,7 +142,7 @@ Figure \ref{fig:distr_target_var} shows how the target variable is distributed a
   \end{center}
 \end{figure}
 
-\subsubsection{Distribution of input variables}
+\subsection{Distribution of input variables}
 
 Figure \ref{fig:distr_input_var} shows histograms across columns in input data for the five dataset. We see different kinds of distributions. Madelon, the artificial dataset, looks to be quite normally distributed in terms of input values per column.
 
@@ -124,97 +155,284 @@ The non-artificial datasets all have a lot of zero-values, especially Dexter and
   \end{center}
 \end{figure}
 
-\subsection{Algorithms and Techniques}
-In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
-- Are the algorithms you will use, including any default variables/parameters in the project clearly defined?
-- Are the techniques to be used thoroughly discussed and justified?
-- Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?
+We see the the inputs generally fall within the same kind of distiribution within the datasets. This means that artificial feautres, probes, where created to mimick the real inputs, and thus hard to seperate out using simple metrics as variance, etc.
+
+
+\section{Methodology and Implementation}
+
+The overall purpose of this capstone is to explore how different dimensionality reduction techniques and model frameworks perform against one another - and against a set of benchmarks. 
+
+To summarize briefly, I will compare four different reduction techniques; PCA, Univariate Feature Selection and two Random Projections techniques; each reducing the input dataset to seven different sizes (5, 10, 15, 25, 35, 50 and 75 dimensions respectively). 
+
+On top of this I will apply four different model frameworks; Logistic Regression, Linear Support Vector Classification, LightGBM and XGBoost.
+
+This yields a total of 560 different combinations to process. This was processed in 3 stages:
+
+\begin{enumerate}
+	\item Dimensionality Reduction  
+	\item Model Fitting
+	\item Prediction and Scoring
+\end{enumerate}
+
+Each step will be explained in detail after the technical overview in sections \ref{impl:dimred}, \ref{impl:modfit} and \ref{impl:modpred} respectively.
+
+\subsection{Technical implementation, overview}
+
+Step 1 would yield 140 unique (reduced) datasets. I would produce all these and cache them as serialized objects, using the python package called \emph{pickle}, before proceeding to step 2. Producing all 140 dataset took about 8.5 CPU hours. The processing was run in parallel across 4 cores on a modest 2.4 GHz machine, so the end-user waiting time for this step was a bit over 2.5 hours.
+
+Step 2 would take the 140 reduced datasets and fit the four model frameworks in turn. This step was also parallelized across the 4 cores, on the same machine. Although logistic regression, LightGBM and XGBoost would process reasonably fast, with runtimes in magnitude of seconds, the linear support vector classifier would sometimes take extremely long, with runtimes up to the magnitude of hours, though some would fit in a couple of seconds. Support vector classification algorithms where cited quite a few times in ~\cite{nips03book} as a high performing model frameworks, and thus I initially implemented a polynomial support vector classification and well as one using a radial basis function kernal, but these would also time out or not converge within reasonable time.
+
+Step 2 without the linear SVC would take only a few minutes. I was not patient enough to wait for all SVC implementations to run. 16 hours of waiting time with the machine running on all cores (so that is 64 CPU hours), would yield 40 of the 140 SVC implementations (chosen in random order). I have included results for the SVC's that ran, when relevant, but generally not.
+
+At the end of step 2, each fitted model was cached as a serialized object, also using \emph{pickle}.
+
+In step 3 I would load the fitted models, and predict on the validation set. These predictions were then used to score the \emph{Balanced Error Rate}, the \emph{F1-score} as well as the \emph{area under the ROC-curve}.
+
+
+\subsection{Preprocessing: Dimensionality Reduction Techniques}\label{impl:dimred}
+
+No data-cleaning, like missing values handling, or similar procedures were needed, as the datasets came pretty well cleaned and structured from the competition website. The data files were delivered as text files, and some minor procedures were needed to load these properly, especially the sparse data sets, as these were delivered in a coordinate-type format.
+
+I implemented normalizing along with the PCA decomposition, in the hope that tis would help the spport vector classification run faster, but nothing noteworthy happened, and thus I did not normalize the input along with the univariate feture selection or the random projections.
+
+Thus I eventually implemented the following four dimensionality reduction methods:
+
+\subsubsection{PCA}
+
+PCA is one of the most well-known dimensionality reduction techniques. However it was still a vital part of the winning entry to the NIPS 2003 Feature Selection Challenge, where it was used by Radford M. Neal and Jianguo Zhang - along side a pretty complax implemention of Bayesian Neural Networks and Dirichlet Diffusion Trees, ~\cite{nips03book}, Chapter 10.
+
+In this capstone project I have implemented SciKit Learns PCA with a normalization step preceeding. For performance comparison I am subsetting to 5, 10, 15, 25, 35, 50 and 75 dimensions respectively on all dataset - no matter the original amount of features.
+
+The PCA will have the benefit that the components will be linear combinations of multiple inputs, and thus we hope to be able to `capture' a lot of information in relatively few features. This might be a benefit on the Arcene dataset which we know has about 1500 original inputs (and the about 8500 false probes). 
+
+The PCA implementation is shown below in Listing \ref{code:pca}.
+
+\begin{lstlisting}[language=python,frame=single,caption=PCA Implementation, label=code:pca]
+def reducer_pca(data, params):
+    # if no params set
+    if params is None: params = {'n_components': 5}
+
+    # normalization, pca pipeline
+    pipeline = Pipeline(
+        [('scaling', StandardScaler()), 
+        ('pca', PCA(n_components=params['n_components']))])
+    pipeline.fit(data['X_train'])
+
+    # output
+    do = deepcopy(data)
+    do['X_train'] = pipeline.transform(data['X_train'])
+    do['X_valid'] = pipeline.transform(data['X_valid'])
+
+    return do
+\end{lstlisting}
+
+On a dataset like madelon, which orginially only had 5 genuine inputs, we would perhaps want to opt for another kind of feature selection, where we can `cherry pick' the best inputs. Univariate feature selection could possibly such a tool.
+
+\subsubsection{Univariate Feature Selection}
+
+Univariate Feature Selection was also used in the winning entry by Radford M. Neal and Jianguo Zhang, ~\cite{nips03book}, Chapter 10.
+
+In this capstone I am implementing the \emph{SelectKBest} univariate feature selection function found in SciKi tLearn. I am selecting the 5, 10, 15, 25, 35, 50 and 75 best features respectively.
+
+Which features are the best is being decided by the \emph{mutual\_info\_classif} scorer function also from SciKit Learn's feature selection module, which ranks the features by the mutual information between a given feature and the target variable.
+
+The upside is ofcourse that we are left with very strong candidates for the best explaining features. The downside of this selection method is, that it can take quite a while to do this process over a given dataset. I found that this way of doing univariate feature selection was between $10x$ and $100x$ slower than PCA and Random Projections.
+
+The univariate feature selection implementation follows that of the PCA, but with the middel pipeline-part being altered as shown in Listing \ref{code:univarkbest}. The functions \emph{SelectKBest} and \emph{mutual\_info\_classif}  being import from \emph{sklearn.feature\_selection}.
+
+\begin{lstlisting}[language=python,frame=single,caption=Univariate Feature Selection Implementation, label=code:univarkbest]
+reducer = SelectKBest(
+    mutual_info_classif, k=params['n_components'])
+reducer.fit(X, y)
+\end{lstlisting}
+
+
+\subsubsection{Random Projections}
+
+Random projections area way of reducing dimensionality on high dimensional datasets. The idea is, that if one is given a set of points in a high-dimensional space, it is possible to roughly maintain the distance between the point while reducing the number of dimensions. This is called the \emph{Johnson-Lindenstrauss lemma}, ~\cite{wiki:jll}.
+
+I implemented both \emph{SparseRandomProjection} and \emph{GaussianRandomProject} from SciKit Learn's \emph{sklearn.random\_projection} module, in a similar fashion as shown for PCA and Univariate Feature Selection. Both random projections will reduce the dataset to 5, 10, 15, 25, 35, 50 and 75 features respectively.
+
+\subsection{Model Frameworks \& Algorithms}\label{impl:modfit}
+
+In general all the implementations used in the final version are out-of-the-box implementations. 
+
+I initially did experiment with different hyperparameters for the Support Vector Classification, using both different kernel types and different polynomial degrees. These ended up mostly not running, and these experiments where discarded. For LightGBM and XGBoost, there are plenty of unexplored opportunities for hyperparameter settings. I eventually did not go down this road, as I felt the current 560 different outputs was sufficient, and that hyperparameter exploration for LightGBM and XGBoost respectively was beyond the scope of this capstone.
+
+The purpose of this capstone is to see how far fairly easy implementations can take us in terms of predictive performance, and not to beat the NIPS 2003 Challenge winners.
+
+\subsubsection{Logistic Regression}
+
+Logistic regression is perhaps the most common and most popular classification algorithm, and with good reason: Logistic regression is, in brief, a linear regression wrapped in a non-linear output function. Thus it has the benefit of being easy to interpret, as it will yield parameter values for each input feature. Logistic regression can often perform quite well, and is usually pretty fast to implement. 
+
+I used \emph{SciKit Learn}'s implementation of logistic regression via the \emph{LogisticRegression} function from \emph{sklearn.linear\_model} as shown in Listing \ref{code:logreg}.
+
+\begin{lstlisting}[language=python,frame=single,caption=Logistic Regression Implementation, label=code:logreg]
+model = LogisticRegression(
+    random_state=0, solver='sag', multi_class='ovr',
+    max_iter=100000)
+\end{lstlisting}
+
+\subsubsection{LightGBM}
+
+LightGBM is a gradient boosting method using tree based learners ~\cite{NIPS2017_6907}, which was built with both speed and accuracy in mind. LightGBM has enjoyed quite a lot of succes in competitions on kaggle along side XGBoost.
+
+For this capstone I used a standard \emph{out-of-the-box} implementation of the \emph{LGBMClassifier} function from the \emph{lightgbm} python package.
+
+\subsubsection{XGBoost}
+
+XGBoost's clame to fame has been it's part in many winning entries to competitions on kaggle. XGBoost was, like LightGBM, built with speed and accuracy in mind ~\cite{xgboostcite}.
+
+Like with LightGBM I used a standard implementation of XGBoost, using the \emph{XGBClassifier} from the \emph{xgboost} python package.
+
+\subsubsection{SVC - Linear}
+
+After trying out implementaions of both SciKit Learns's polynomial as well as radial basis function-based support vector classification functions, I eventually end up implementing only a linear type, as previously mentioned. My final implementation ended up being fairly standard, though I did allow the model quite a few more iterations. The implementation is shown in Listing \ref{code:svclin}
+
+\begin{lstlisting}[language=python,frame=single,caption=SVC Linear Implementation, label=code:svclin]
+model = svm.LinearSVC(max_iter=9000000)
+\end{lstlisting}
+
+
+\subsection{Prediction}\label{impl:modpred}
+
+All model frameworks follow the SciKit Learn structure, and thus have a $.predict()$ method. Going through all the fits, and predicting on the validation was therefor fairly straight forward. 
+
 
 \subsection{Benchmark}
-In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
-- Has some result or value been provided that acts as a benchmark for measuring performance?
-- Is it clear how this result or value was obtained (whether by data or by hypothesis)?
+
+My suggested benchmark model is logistic regression based on the first five components from the PCA decomposition. Logistic regression and PCA decomposition are both very common and popular statistical tools, both easily implemented and usually with fairly good performance. This cocktail is thus in many ways a good place to start when one is faced with a classification problem in a new domain or with a new, unknown dataset.
+
+The benchmark model's performance against the winning model of the NIPS Challenge is shown in table \ref{tab:benchmark}. Guessing on either all -1 or all +1, shown in the table as Naive Guess, willl yield a BER of 0.5 on all five datasets, due to the score being \emph{balanced}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrrrr}
+\toprule
+Dataset &    ARC &  DEX &  DOR &  GIS &   MAD &     Total \\
+BER, validation set \\
+\midrule
+NIPS Winner 		&  0.072 &  0.053 &  0.055 & 0.016 &  0.067 &  0.053 \\
+LogisticReg PCA5	&  0.306 &  0.390 &  0.335 & 0.158 &  0.398 &  0.318 \\
+Naive Guess		&  0.500 &  0.500 &  0.500 &  0.500 &  0.500 &  0.500 \\
+\bottomrule
+\end{tabular}
+\caption{\label{tab:benchmark} Benchmark model performance vs. NIPS Challenge Winner's score}
+\end{table}
 
 
-\section{III. Methodology}
-(approx. 3-5 pages)
-
-\subsection{Data Preprocessing}
-In this section, all of your preprocessing steps will need to be clearly documented, if any were necessary. From the previous section, any of the abnormalities or characteristics that you identified about the dataset will be addressed and corrected here. Questions to ask yourself when writing this section:
-- If the algorithms chosen require preprocessing steps like feature selection or feature transformations, have they been properly documented?
-- Based on the **Data Exploration** section, if there were abnormalities or characteristics that needed to be addressed, have they been properly corrected?
-- If no preprocessing is needed, has it been made clear why?
-
-\subsection{Implementation}
-In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
-- Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?
-- Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?
-- Was there any part of the coding process (e.g., writing complicated functions) that should be documented?
-
-\subsection{Refinement}
-In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
-- Has an initial solution been found and clearly reported?
-- Is the process of improvement clearly documented, such as what techniques were used?
-- Are intermediate and final solutions clearly reported as the process is improved?
 
 
-\section{IV. Results}
-(approx. 2-3 pages)
+\section{Results}
 
-\subsection{Model Evaluation and Validation}
-\label{model_val}
+\subsection{Dimensionality reduction}
 
-\subsubsection{Balanced Error Rate}
-In this section, the final model and any supporting qualities should be evaluated in detail. It should be clear how the final model was derived and why this model was chosen. In addition, some type of analysis should be used to validate the robustness of this model and its solution, such as manipulating the input data or environment to see how the model’s solution is affected (this is called sensitivity analysis). Questions to ask yourself when writing this section:
-- Is the final model reasonable and aligning with solution expectations? Are the final parameters of the model appropriate?
-- Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?
-- Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?
-- Can results found from the model be trusted?
+\subsubsection{Processing Times}
 
-\subsection{Justification}
-In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
-- Are the final results found stronger than the benchmark result reported earlier?
-- Have you thoroughly analyzed and discussed the final solution?
-- Is the final solution significant enough to have solved the problem?
+\begin{table}[h]
+\centering
+\begin{tabular}{lrr}
+\toprule
+Reduction method				& Mean time, sec. 		&  Median time, sec. \\
+\midrule
+PCA 							& 33.80 				&  9.41 \\
+Random Projections, Gaussian	& 11.38 				&  8.67 \\
+Random Projections, Sparse		& 11.70 				&  9.31 \\
+Univariate, $k$-best			&  819.19 			&  268.79 \\
+\bottomrule
+\end{tabular}
+\caption{\label{tab:reducetimes} Mean and median processing times of reduction methods appliead}
+\end{table}
 
+The combinations of five datasets, four dimensionality reduction methods and seven amounts of desired component, gives a total of 140 unique reduced datasets. The mean and median processing time per method per dataset is shown in table \ref{tab:reducetimes}. As expected, univariate selection was by far the slowest method - it will be interesting to see, however, if this is then able to give us better predictions.
 
-\section{V. Conclusion}
-(approx. 1-2 pages)
-
-\subsection{Free-Form Visualization}
-In this section, you will need to provide some form of visualization that emphasizes an important quality about the project. It is much more free-form, but should reasonably support a significant result or characteristic about the problem that you want to discuss. Questions to ask yourself when writing this section:
-- Have you visualized a relevant or important quality about the problem, dataset, input data, or results?
-- Is the visualization thoroughly analyzed and discussed?
-- If a plot is provided, are the axes, title, and datum clearly defined?
-
-\subsection{Reflection}
-In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section:
-- Have you thoroughly summarized the entire process you used for this project?
-- Were there any interesting aspects of the project?
-- Were there any difficult aspects of the project?
-- Does the final model and solution fit your expectations for the problem, and should it be used in a general setting to solve these types of problems?
-
-\subsection{Improvement}
-In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution. Questions to ask yourself when writing this section:
-- Are there further improvements that could be made on the algorithms or techniques you used in this project?
-- Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?
-- If you used your final solution as the new benchmark, do you think an even better solution exists?
+PCA would take longer on some of the dataset than random projections, as can be seen on the high \emph{mean} runtime. The \emph{median} runtime however, was in a magnitude similar to the random projections.
 
 
-\section{Before submitting, ask yourself. . .}
+\subsubsection{Predictive Performance}
 
-- Does the project report you’ve written follow a well-organized structure similar to that of the project template?
-- Is each section (particularly **Analysis** and **Methodology**) written in a clear, concise and specific fashion? Are there any ambiguous terms or phrases that need clarification?
-- Would the intended audience of your project be able to understand your analysis, methods, and results?
-- Have you properly proof-read your project report to assure there are minimal grammatical and spelling mistakes?
-- Are all the resources used for this project correctly cited and referenced?
-- Is the code that implements your solution easily readable and properly commented?
-- Does the code execute without error and produce results similar to those reported?
+\begin{table}[t!]
+\centering
+\begin{tabular}{lr}
+\toprule
+Method 	&       BER \\
+\midrule
+Univariate $k$-best      		&  0.233 \\
+PCA						&  0.241 \\
+Random Projection Gaussian	&  0.382 \\
+Random Projection Sparse	&  0.384 \\
+\bottomrule
+\end{tabular}
+\caption{\label{tab:reduceperf} Average predictive performance per reduction method}
+\end{table}
 
-Blablabla said Nobody .
+\begin{figure}[b!]
+  \begin{center}
+    \includegraphics[width=417pt]{fig__pred_perf_reduc_meth.pdf}
+    \caption{\label{fig:pred_perf_reduc_meth} Predictive performance vs $n$ components}
+  \end{center}
+\end{figure}
 
-\bibliography{capstone}{}
+Table \ref{tab:reduceperf} show predictive performance for each dimensionality reduction method measured as average \emph{BER} across all number of components, all datasets and all model frameworks (Linear SVC excluded).
+
+We suspected the \emph{Univariate Feature Selection} should yield the best performance, as this would test each feature against the target value. Univariate feature selection did turn out to have the best performance, however only by a small margin, and perhaps not enough to justify the additional runtime. If however, the task is to deliver the best prediction, without concerns for processing time, Univariate Feature Selection seems to be the best choice.
+
+PCA however turned out very strong. And when one takes into consideration the very reasonable runtimes, it definitely shows why PCA is such a popular tool for dimensionality reduction.
+
+Both Random Projection methods turned out, on average, to perform worse than our benchmark model shown in \ref{tab:benchmark}. The usecase for random projections is probably better on even larger datasets, where calculating PCA can not be done.
+
+For all reduction methods it was generally the case that more dimensions lead to better performance, though the marginal gain was decreasing in number of dimensions. The predict performance measured in average BER for each reduction method against number of dimensions is shown in figure \ref{fig:pred_perf_reduc_meth}
+
+
+\subsection{Model Frameworks}
+
+\subsubsection{Processing Times}
+
+
+\subsubsection{Predictive Performance}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrr}
+\toprule
+{} 				& BER, full	& BER, subset\\
+model\_framework & 			& \\
+\midrule
+mod\_lightgbm	& 0.301	&  0.334 \\
+mod\_xgboost		& 0.305	&  0.333 \\
+mod\_logisticreg	& 0.324	&  0.340 \\
+mod\_svc\_lin		& N.A.	&  0.374 \\
+\bottomrule
+\end{tabular}
+\caption{\label{tab:modperf} Average predictive performance per model framework}
+\end{table}
+
+Table \ref{tab:modperf} show average BER per model framework. The BER, full show the average BER when run across all unique reduced datasets. The BER, subset shows the average BER across the subset of reduced datasets which were successfully processed by the linear SVC, as to go an indication of the linear SVC's performance.
+
+In general we find XGBoost and LightGBM to outperform Logistic Regression by a percentage point or two. Not much, but considering these are out-of-the-box implementations, reasonable. They also beat the benchmark model which had a BER-score of 0.318. It is reasonable to expect that with finetuning both frameworks would do considerably better.
+
+The NIPS 2003 Feature Selection Challenge Winner had a BER score of 0.053 - so there is still a lot of work to be done if the ambition is to beat this model.
+
+\section{Conclusion}
+
+\subsubsection{Dimensionality reduction}
+
+Our first priority was to investigate different methods of dimensionality reduction and features selection.
+
+We saw that PCA is a very strong dimensionality reduction method, that balances both predictive performance as well as computational time. Univariate feature selection yielded the best performance, but at a cost of slow processing times. The two random projection methods were not terrible, but perhaps also better suited for problems where the number of dimensions is even greater than what we've seen in this capstone.
+
+\subsubsection{Model frameworks, predictive performance}
+
+Our second priority was to investigate how well simple implementations of popular model frameworks would perform compared to our benchmark and to the NIPS 2003 Feature Selection Challenge Winning entry.
+
+With respect to how well simple implementations of popluar models perform, XGBoost and LightGBM did manage to beat our benchmark right out of the box. Tuning hyper parameters would have no doubt brought extra predictive performance to both model frameworks. 
+
+We did not see any success worth mentioning with the implementations of SVC. These were ill-suited to deal with the present data.
+
+
+\bibliography{capstone}
 \bibliographystyle{apalike}
+
 
 
 \end{document}
